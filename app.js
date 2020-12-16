@@ -16,13 +16,14 @@ app.get('/', function(req, res){
 
   // getDay returns number 0-6 corresponding to the day of week
   var currentDay = today.getDay();
-  // can use res.write() to send multiple pieces of data
-  if (currentDay === 6 || currentDay === 0) {
-    res.write("<h1>It's the weekend!</h1>");
-    res.send();
-  } else {
-    res.sendFile(__dirname + '/index.html');
-  }
+
+  // day array
+  var dayArray = {0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday'};
+
+  var day = dayArray[currentDay]
+
+  // render a file called list.ejs in views folder
+  res.render('list', {kindOfDay: day});
 })
 
 app.listen(3000, function(){
