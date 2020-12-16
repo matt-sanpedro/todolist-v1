@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 // create app constant by using express
 const app = express();
 
+// tell app to use ejs
+app.set('view engine', 'ejs');
+
 // create the get route
 app.get('/', function(req, res){
   var today = new Date();
@@ -13,7 +16,6 @@ app.get('/', function(req, res){
 
   // getDay returns number 0-6 corresponding to the day of week
   var currentDay = today.getDay();
-
   // can use res.write() to send multiple pieces of data
   if (currentDay === 6 || currentDay === 0) {
     res.write("<h1>It's the weekend!</h1>");
