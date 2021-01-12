@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 let items = ['Eat', 'Sleep', 'Program', 'Coffee'];
 let workItems = [];
 
-// create the get route
+// HOME
 app.get('/', function(req, res) {
   let today = new Date();
   // console.log(today.getDay());
@@ -70,6 +70,7 @@ app.post('/', function(req, res) {
 
 })
 
+// WORK
 app.get('/work', function(req, res){
   res.render('list', {listTitle: 'Work List', newList: workItems});
 });
@@ -79,6 +80,11 @@ app.post('/work', function(req, res){
   let item = req.body.newItem;
   workItems.push(item);
   res.redirect('/work');
+});
+
+// ABOUT
+app.get('/about', function(req, res){
+  res.render('about');
 });
 
 app.listen(3000, function() {
