@@ -14,27 +14,28 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // initialize variables
-var items = ['Eat', 'Sleep', 'Program', 'Coffee'];
+let items = ['Eat', 'Sleep', 'Program', 'Coffee'];
+let workItems = [];
 
 // create the get route
 app.get('/', function(req, res) {
-  var today = new Date();
+  let today = new Date();
   // console.log(today.getDay());
   // res.send('Hello');
 
-  var options = {
+  let options = {
     weekday: 'long',
     day: 'numeric',
     month: 'long'
   };
 
-  var day = today.toLocaleDateString('en-US', options);
+  let day = today.toLocaleDateString('en-US', options);
 
 
   // getDay returns number 0-6 corresponding to the day of week
-  var currentDay = today.getDay();
+  let currentDay = today.getDay();
 
-  var colorArray = {
+  let colorArray = {
     0: 'black',
     1: 'black',
     2: 'black',
@@ -44,22 +45,41 @@ app.get('/', function(req, res) {
     6: 'black'
   };
 
-  var color = colorArray[currentDay];
+  let color = colorArray[currentDay];
 
   // render a file called list.ejs in views folder
   res.render('list', {
-    kindOfDay: day,
+    listTitle: day,
     headerColor: color,
     newList: items
   });
 });
 
 app.post('/', function(req, res) {
-  newItem = req.body.newItem;
-  items.push(newItem);
-  // redirect to home route and trigger the app.get
-  res.redirect('/');
+  // you can pass the "value" property in a button with ejs variable
+  // console.log(req.body);
+  let newItem = req.body.newItem;
+
+  if (req.body.list === 'Work List') {
+    workItems.push(newItem);
+    res.redirect('/work');
+  } else {
+    items.push(newItem);
+    res.redirect('/');
+  }
+
 })
+
+app.get('/work', function(req, res){
+  res.render('list', {listTitle: 'Work List', newList: workItems});
+});
+
+app.post('/work', function(req, res){
+  console.log(req.body);
+  let item = req.body.newItem;
+  workItems.push(item);
+  res.redirect('/work');
+});
 
 app.listen(3000, function() {
   console.log('Server started on port 3000');
